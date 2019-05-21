@@ -3,6 +3,7 @@ package weather
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -55,11 +56,13 @@ type OWM struct {
 func NewOWM(key string) *OWM {
 	return &OWM{
 		baseURL: "https://api.openweathermap.org/data/2.5/weather",
-		key: key,
+		key:     key,
 	}
 }
 
 func (owm *OWM) GetWeather(city string) (Weather, error) {
+	log.Printf("Get weather for %s\n", city)
+
 	r, err := http.Get(fmt.Sprintf("%s?q=%s,it&appid=%s&units=metric", owm.baseURL, city, owm.key))
 	if err != nil {
 		return Weather{}, err
@@ -75,6 +78,6 @@ func (owm *OWM) GetWeather(city string) (Weather, error) {
 
 	return Weather{
 		Description: v.Weather[0].Description,
-		Temp: v.Main.Temp,
+		Temp:        v.Main.Temp,
 	}, nil
 }
