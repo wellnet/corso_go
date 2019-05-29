@@ -5,4 +5,4 @@ include .env
 default: run
 
 run:
-	@go run main.go -port=8081
+	@export API_KEY=$(API_KEY);go run main.go -port=8081
